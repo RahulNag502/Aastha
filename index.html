@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday 🎂</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    height: 100%;
+    overflow: hidden;
+    background: linear-gradient(135deg, #6a11cb, #ff4d6d);
+    color: white;
+    text-align: center;
+}
+
+/* INTRO */
+#intro {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 520px;
+    line-height: 1.8;
+}
+
+/* BUTTON */
+button {
+    margin-top: 25px;
+    padding: 14px 28px;
+    border-radius: 30px;
+    border: none;
+    font-size: 1rem;
+    background: white;
+    color: #6a11cb;
+    cursor: pointer;
+}
+
+/* PHOTO SECTION */
+#photoSection {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+/* TEXT */
+#sweet {
+    margin-top: 20px;
+    font-size: 1.4rem;
+    padding: 0 20px;
+}
+
+/* FRAME — NO CROPPING */
+#frame {
+    position: relative;
+    width: 92%;
+    max-width: 380px;
+    height: 70vh;
+    margin: 20px auto;
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(6px);
+    animation: glow 3s ease-in-out infinite alternate;
+}
+
+/* IMAGE — FULLY VISIBLE */
+.slide {
+    position: absolute;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    opacity: 0;
+    transform: scale(1.06);
+    transition: opacity 1s ease, transform 1.6s ease;
+}
+
+/* ACTIVE IMAGE */
+.slide.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* GLOW */
+@keyframes glow {
+    from { box-shadow: 0 0 20px rgba(255,255,255,0.3); }
+    to { box-shadow: 0 0 45px rgba(255,255,255,0.8); }
+}
+
+/* CONFETTI */
+.confetti {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    top: -10px;
+}
+
+/* HEART */
+.heart {
+    position: fixed;
+    font-size: 18px;
+    animation: fly 1.2s ease forwards;
+}
+
+@keyframes fly {
+    to {
+        transform: translateY(-80px) scale(1.8);
+        opacity: 0;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<audio id="music" src="music.mp3"></audio>
+
+<!-- INTRO -->
+<div id="intro">
+✨ A very special day has arrived ✨<br><br>
+
+Today is all about smiles, happiness and beautiful memories 💫  
+May your life always be filled with joy, laughter and love 🌸  
+May every dream you see turn into reality ✨  
+
+You are truly special 💖  
+
+<br><br>
+
+<button onclick="start()">Open Your Birthday Surprise 🎁</button>
+</div>
+
+<!-- PHOTO SECTION -->
+<div id="photoSection">
+
+<div id="sweet">
+Happy Birthday Aastha🎂💖<br>
+You make the world brighter just by being in it ✨
+</div>
+
+<div id="frame">
+<img src="photo1.jpg" class="slide">
+<img src="photo2.jpg" class="slide">
+<img src="photo3.jpg" class="slide">
+<img src="photo4.jpg" class="slide">
+<img src="photo5.jpg" class="slide">
+<img src="photo6.jpg" class="slide">
+</div>
+
+</div>
+
+<script>
+
+function start() {
+    document.getElementById("intro").style.display = "none";
+    document.getElementById("photoSection").style.display = "block";
+    document.getElementById("music").play();
+    confettiRain();
+    startSlideshow();
+}
+
+/* CONFETTI */
+function confettiRain() {
+    for (let i = 0; i < 140; i++) {
+        let c = document.createElement("div");
+        c.className = "confetti";
+        c.style.left = Math.random() * window.innerWidth + "px";
+        c.style.background = `hsl(${Math.random()*360},100%,50%)`;
+        c.style.animation = `fall ${2 + Math.random()*3}s linear infinite`;
+        document.body.appendChild(c);
+    }
+}
+
+/* SLIDESHOW */
+function startSlideshow() {
+    const slides = document.querySelectorAll(".slide");
+    let index = 0;
+
+    function showNext() {
+        slides.forEach(s => s.classList.remove("active"));
+        slides[index].classList.add("active");
+        heartBurst();
+        index = (index + 1) % slides.length;
+        setTimeout(showNext, 2600);
+    }
+
+    showNext();
+}
+
+/* HEART BURST */
+function heartBurst() {
+    for (let i = 0; i < 6; i++) {
+        let h = document.createElement("div");
+        h.className = "heart";
+        h.innerHTML = "💖";
+        h.style.left = Math.random()*window.innerWidth + "px";
+        h.style.top = Math.random()*window.innerHeight + "px";
+        document.body.appendChild(h);
+        setTimeout(()=>h.remove(),1200);
+    }
+}
+
+/* FALL */
+const style = document.createElement("style");
+style.innerHTML = `
+@keyframes fall {
+    to { transform: translateY(100vh) rotate(720deg); }
+}`;
+document.head.appendChild(style);
+
+</script>
+
+</body>
+</html>
